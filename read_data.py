@@ -127,6 +127,7 @@ def read_data_IE(cross, index):
 def read_data_MELD(num_classes):
     S_train, T_train, Label1, emt1, S_test, T_test, Label2, emt2, S_valid, T_valid, Label3, emt3 = joblib.load(
         '/amax/MXH/Features/MELD_ST.pkl')
+
     if num_classes == 7:
         S_train = np.array(S_train[0:9988])
         T_train = np.array(T_train)

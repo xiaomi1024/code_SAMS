@@ -5,7 +5,6 @@ import torch.backends.cudnn as cudnn
 import joblib
 import torch.nn as nn
 import numpy as np
-import pickle
 import math
 from sklearn.metrics import confusion_matrix, recall_score, accuracy_score
 import os
@@ -126,20 +125,20 @@ def read_data_IE(cross, index):
         print('train:', train_data_s.shape, train_label.shape, train_data_t.shape)
     return train_data_s, train_data_t, train_label, test_data_s, test_data_t, Test_label
 def read_data_MELD(num_classes):
-    F3 = open('./features/MELD_ST.pkl', 'rb')
-    S_train, T_train, Label1, emt1, S_test, T_test, Label2, emt2, S_valid, T_valid, Label3, emt3 = pickle.load(F3)
+    S_train, T_train, Label1, emt1, S_test, T_test, Label2, emt2, S_valid, T_valid, Label3, emt3 = joblib.load(
+        '/amax/MXH/Features/MELD_ST.pkl')
     if num_classes == 7:
-        S_train = np.concatenate((np.array(S_train[0:9988]), np.array(S_train[9988: 2 * 9988])), axis=-1)
+        S_train = np.array(S_train[0:9988])
         T_train = np.array(T_train)
         train_label = np.array(Label1)
-        S_test = np.concatenate((np.array(S_test[0:2610]), np.array(S_test[2610: 2 * 2610])), axis=-1)
+        S_test = np.array(S_test[0:2610])
         T_test = np.array(T_test)
         Test_label = np.array(Label2)
-        S_valid = np.concatenate((np.array(S_valid[0:1108]), np.array(S_valid[1108: 2 * 1108])), axis=-1)
+        S_valid = np.array(S_valid[0:1108])
         T_valid = np.array(T_valid)
         Valid_label = np.array(Label3)
     if num_classes == 5:
-        S_train = np.concatenate((np.array(S_train[0:9988]), np.array(S_train[9988: 2 * 9988])), axis=-1)
+        S_train = np.array(S_train[0:9988])
         T_train = np.array(T_train)
         train_label_a = np.array(Label1)
         S_train = np.delete(S_train, np.where(train_label_a == 5), axis=0)
@@ -149,7 +148,7 @@ def read_data_MELD(num_classes):
         T_train = np.delete(T_train, np.where(train_label_a_ == 6), axis=0)
         train_label = np.delete(train_label_a_, np.where(train_label_a_ == 6), axis=0)
 
-        S_test = np.concatenate((np.array(S_test[0:2610]), np.array(S_test[2610: 2 * 2610])), axis=-1)
+        S_test = np.array(S_test[0:2610])
         T_test = np.array(T_test)
         Test_label_a = np.array(Label2)
         S_test = np.delete(S_test, np.where(Test_label_a == 5), axis=0)
@@ -159,7 +158,7 @@ def read_data_MELD(num_classes):
         T_test = np.delete(T_test, np.where(Test_label_a_ == 6), axis=0)
         Test_label = np.delete(Test_label_a_, np.where(Test_label_a_ == 6), axis=0)
 
-        S_valid = np.concatenate((np.array(S_valid[0:1108]), np.array(S_valid[1108: 2 * 1108])), axis=-1)
+        S_valid = np.array(S_valid[0:1108])
         T_valid = np.array(T_valid)
         Valid_label_a = np.array(Label3)
         S_valid = np.delete(S_valid, np.where(Valid_label_a == 5), axis=0)
